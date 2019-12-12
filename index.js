@@ -27,9 +27,13 @@ app.post("/", async (req, res) => {
 
   if (!text) return res.sendStatus(400);
 
-  const langCode = await getLangCode(text);
+  const langCode = await getLangCode(text).catch(() => {
+    return res.sendStatus(500);
+  });
 
-  const sentiment = await getSentiment(text, langCode);
+  const sentiment = await getSentiment(text, langCode).catch(() => {
+    return res.sendStatus(500);
+  });;
 
   res.json(sentiment);
 });
