@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const AWS = require("aws-sdk");
 
-AWS.config.loadFromPath("./rootkey.json");
 AWS.config.update({ region: "us-east-2" });
 const comprehend = new AWS.Comprehend();
 
