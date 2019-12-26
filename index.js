@@ -33,7 +33,7 @@ app.post("/", async (req, res) => {
 
   const sentiment = await getSentiment(text, langCode).catch(() => {
     return res.sendStatus(500);
-  });;
+  });
 
   res.json(sentiment);
 });
