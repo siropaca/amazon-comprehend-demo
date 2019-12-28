@@ -14,7 +14,7 @@ exports.handler = async (event, context, callback) => {
     TextList: textAry
   };
 
-  let LanguageResult = await comprehend
+  const LanguageResult = await comprehend
                               .batchDetectDominantLanguage(params)
                               .promise();
 
