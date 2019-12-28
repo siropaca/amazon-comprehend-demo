@@ -4,21 +4,28 @@ AWS.config.update({ region: "us-east-2" });
 const comprehend = new AWS.Comprehend();
 
 exports.handler = async (event, context, callback) => {
-  let text = event.text;
+  const text = event.text;
 
   if (!text) return;
 
+  const textAry = Array.isArray(text) ? text : [text];
+
   let params = {
-    TextList: [text]
+    TextList: textAry
   };
 
-  let result = await comprehend.batchDetectDominantLanguage(params).promise();
+  let LanguageResult = await comprehend
+                              .batchDetectDominantLanguage(params)
+                              .promise();
 
-  const languageCode = result.ResultList[0].Languages[0].LanguageCode;
+  params["LanguageCode"] = LanguageResult
+                            .ResultList[0]
+                            .Languages[0]
+                            .LanguageCode;
 
-  params["LanguageCode"] = languageCode;
-
-  const sentiment = await comprehend.batchDetectSentiment(params).promise();
+  const sentiment = await comprehend
+                            .batchDetectSentiment(params)
+                            .promise();
 
   return sentiment;
 };
