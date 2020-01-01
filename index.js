@@ -8,21 +8,21 @@ exports.handler = async (event, context, callback) => {
 
   if (!text) return;
 
-  const textAry = Array.isArray(text) ? text : [text];
-
   let params = {
-    TextList: textAry
+    TextList: [text]
   };
 
+  // 言語コードを判別する
   const LanguageResult = await comprehend
-                              .batchDetectDominantLanguage(params)
-                              .promise();
+                               .batchDetectDominantLanguage(params)
+                               .promise();
 
   params["LanguageCode"] = LanguageResult
                             .ResultList[0]
                             .Languages[0]
                             .LanguageCode;
 
+  // 感情分析をする
   const sentiment = await comprehend
                             .batchDetectSentiment(params)
                             .promise();
